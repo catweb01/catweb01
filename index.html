@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>PixelRPG</title>
+	<meta charset="utf-8">
+</head>
+<body>
+	<!-- подключаю фреймворк -->
+<script type="text/javascript" src="assets\js\pointjs_0.2.0.9.js"></script>
+<script type="text/javascript">
+	// задаю размеры и цвет холста
+	var pjs = new PointJS(4000, 4000, {backgroundColor: ""});
+	var obj = pjs.game.newImageObject({ 
+     file : "assets/images/fon.png", 
+     x : 0, 
+     y : 0, 
+     w : 4000,
+     h : 4000,
+     //scale : 0.5, // уменьшить картинку в 2 раза, если не заданы ширина и высота
+   });
+	// создаю переменную для pjs.game
+	var game = pjs.game;
+	// создаю переменную для подключения клавиатуры
+	var key = pjs.keyControl;
+	// разрешаю управлять клавиатурой
+	key.initControl();
+	// создаю переменную для поинта
+	var p = pjs.vector.point;
+	var q = "";
+	var text = pjs.brush;
+	// создаю игровую модель и переменную для нее
+
+	var rect = game.newImageObject (
+	{
+		x : 100,
+		y : 100,
+		/*
+		radius : 50,
+		fillColor : "black",
+		*/
+		file : "assets/images/Heroes/Dedpool/dedpool.png",
+		w : 130,
+		h : 200,
+
+	})
+	// создаю игровой цикл 
+	game.newLoop('PixelRPG', function(){
+		obj.draw();
+
+		// сделал функцию для управления 
+
+		function move(knopka1, knopka2, name, x, y, id) {
+			if (key.isDown(knopka1) || key.isDown(knopka2)) {
+				name.move(p(x,y));
+				q = 'Direction: ' + id;
+			}
+		}
+
+		move('RIGHT', 'D', rect, 10, 0, 'Right');
+		move('LEFT', 'A', rect, -10, 0, 'Left');
+		move('DOWN', 'S', rect, 0, 10, 'Down');
+		move('UP', 'W', rect, 0, -10, 'Up');
+		/*
+		// алгоритмы для управления
+		if (key.isDown('RIGHT') || key.isDown('D')) {
+			rect.move(p(1,0));
+		q = "Right"
+		} else if (key.isDown('LEFT') || key.isDown('A')) {
+			rect.move(p(-1,0));
+		q = "Left"
+		}
+
+		
+		// ПРИМЕЧАНИЕ ДЛЯ СЕБЯ: ОСЬ Y - ВВЕРХ ЭТО ЧИСЛО ОТРИЦАТЕЛЬНОЕ, ВНИЗ - ПОЛОЖИТЕЛЬНОЕ!!!
+		if (key.isDown('DOWN') || key.isDown('S')) {
+			rect.move(p(0,1));
+		q = "Down"
+		} else if (key.isDown('UP') || key.isDown('W')) {
+			rect.move(p(0,-1));
+		q = "Up"
+		}
+		*/
+		
+		// приказываю модели вращаться
+		rect.turn(5);
+		// отрисовка всего
+		rect.draw();
+		
+
+	text.drawText({
+		text : "DEV VERSION!",
+		x : 20, y : 20,
+		color : "red",
+		size : 30,
+		style : "bold",
+		strokeWidth : 1,
+		strokeColor : "black"
+	});
+		text.drawText({
+			// если количество зажатых клавиш больше нуля, то будет показывать текст переменной q, если количество нажатых клавиш 0, то ничего не будет показывать
+		text : key.getCountKeysDown() > 0 ? q : q="",
+		x : 20, y : 50,
+		color : "red",
+		size : 30,
+		style : "bold",
+		strokeWidth : 1,
+		strokeColor : "black"
+	});
+
+	})
+	// запуск цикла
+	game.setLoop('PixelRPG');
+	game.start();
+
+
+
+
+
+</script>
+</body>
+</html>
